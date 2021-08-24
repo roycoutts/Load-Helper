@@ -1,0 +1,331 @@
+<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        mc:Ignorable="d"
+        Title="MOSAIQ Duplicate MRN Checker" Height="600" Width="1030" Background="#FF202020">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="70*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="80*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="120*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="LoadFileBorder" BorderBrush="DodgerBlue" BorderThickness="4" CornerRadius="20" Margin="10,10,5,5" Grid.Row="0" Grid.RowSpan="2">
+            <Button x:Name="LoadFileButton" Margin="0,0,0,0" FontWeight="Bold" Background="DodgerBlue" Foreground="Black" FontSize="20" BorderBrush="Black" BorderThickness="4">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Load File</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="LoadFileTooltip" Content="Click to load the Excel file containing Duplicate MRNs"></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="20"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="FileProtectionBorder" BorderBrush="DodgerBlue" BorderThickness="4" CornerRadius="10" Margin="5,10,5,5" Grid.Row="0" Grid.Column="1">
+            <Button x:Name="FileProtectionButton" Foreground="Black" Background="DodgerBlue" FontSize="36" FontFamily="Webdings" BorderBrush="Black" BorderThickness="4">
+                <TextBlock>&#xD0;</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="FileProtectionTooltip" Content="If button is RED, click to enter Excel password."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="SourceFilePathBorder" Margin="5,10,5,5" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="6" >
+            <Label x:Name="SourceFilePathLabel" Content="" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" Padding="20,0,0,0" FontSize="20">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="RenameFileBorder" BorderBrush="DodgerBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="1" Grid.Column="1">
+            <Button x:Name="RenameFileButton" Content="v" Foreground="Black" Background="DodgerBlue" FontSize="36" FontFamily="Wingdings" BorderBrush="Black" BorderThickness="4">
+                <Button.ToolTip>
+                    <ToolTip x:Name="RenameFileTooltip" Content="Click to rename Excel file."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="SourceFileNameBorder" Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="6">
+            <Label x:Name="SourceFileNameLabel" Content="" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" Padding="20,0,0,0" FontSize="20">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="ReadRecordsBorder" BorderBrush="DodgerBlue" BorderThickness="4" CornerRadius="20" Margin="10,5,5,5" Grid.Row="2" Grid.RowSpan="2">
+            <Button x:Name="ReadRecordsButton" Background="DodgerBlue" Foreground="Black" FontSize="20" FontWeight="Bold" BorderBrush="Black" BorderThickness="4">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Read Records</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="ReadRecordsTooltip" Content="Click to read all records from Excel into memory."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="20"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="RecordsProgressBarBorder" Grid.Column="1" Margin="0,60,0,0" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2">
+            <ProgressBar x:Name="RecordsProgressBar" Value="0" Margin="10,7,10,-6" />
+        </Border>
+        <Border x:Name="RecordsBorder" Margin="5,5,5,5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+            <Label x:Name="RecordsLabel" Content="RECORDS" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="RecordsCountBorder" Margin="5,5,5,5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+            <Label x:Name="RecordsCountLabel" Content="0" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="RecordsWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Border x:Name="FullMatchProgressBarBorder" Grid.Column="3" Margin="0,60,0,0" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2">
+            <ProgressBar x:Name="FullMatchProgressBar" Value="0" Margin="10,7,10,-6" />
+        </Border>
+        <Border x:Name="FullMatchBorder" Margin="5,5,5,5" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2">
+            <Label x:Name="FullMatchLabel" Content="FULL MATCH" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="FullMatchCountBorder" Margin="5,5,5,5" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2">
+            <Label x:Name="FullMatchCountLabel" Content="0" Foreground="LawnGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="FullMatchWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Border x:Name="PartialMatchProgressBarBorder" Grid.Column="5" Margin="0,60,0,0" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2">
+            <ProgressBar x:Name="PartialMatchProgressBar" Value="0" Margin="10,7,10,-6" />
+        </Border>
+        <Border x:Name="PartialMatchBorder" Margin="5,5,5,5" Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2">
+            <Label x:Name="PartialMatchLabel" Content="PARTIAL MATCH" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="PartialMatchCountBorder" Margin="5,5,5,5" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2">
+            <Label x:Name="PartialMatchCountLabel" Content="0" Foreground="Yellow" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="PartialMatchWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Border x:Name="MisMatchProgressBarBorder" Grid.Column="7" Margin="0,60,0,0" Grid.Row="2" Grid.RowSpan="1">
+            <ProgressBar x:Name="MisMatchProgressBar" Value="0" Margin="10,7,10,-6" />
+        </Border>
+        <Border x:Name="MisMatchBorder" Margin="5,5,5,5" Grid.Row="2" Grid.Column="7">
+            <Label x:Name="MisMatchLabel" Content="MISMATCH" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="MisMatchCountBorder" Margin="5,5,5,5" Grid.Row="3" Grid.Column="7">
+            <Label x:Name="MisMatchCountLabel" Content="0" Foreground="Red" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="MisMatchWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="2" Grid.Column="7" Grid.RowSpan="2"/>
+        <Border x:Name="QueryMosaiqBorder" BorderBrush="DodgerBlue" BorderThickness="4" CornerRadius="20" Margin="5,5,5,5" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2">
+            <Button x:Name="QueryMosaiqButton" Foreground="Black" Background="DodgerBlue" FontSize="20" FontWeight="Bold" BorderBrush="Black" BorderThickness="4">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Query Mosaiq</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="QueryMosaiqTooltip" Content="Click to query Mosaiq using Crystal Reports."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="20"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="RecordBorder" Margin="5,5,5,5" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="1">
+            <Label x:Name="RecordLabel" Content="RECORD" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="0"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="RecordCountBorder" Margin="5,5,5,5" Grid.Row="4" Grid.Column="4">
+            <Label x:Name="RecordCountLabel" Content="0" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="RecordWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <Border x:Name="PreviousRecordBorder" BorderBrush="Orange" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="1">
+            <Button x:Name="PreviousRecordButton" Foreground="Black" Background="Orange" FontSize="36" FontFamily="Wingdings 3" BorderBrush="Black" BorderThickness="4">
+                <TextBlock>&#x74;</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="PreviousRecordTooltip" Content="Click to go back one record."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="NextRecordBorder" BorderBrush="Orange" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="4" Grid.Column="6">
+            <Button x:Name="NextRecordButton" Foreground="Black" Background="Orange" FontSize="36" FontFamily="Wingdings 3" BorderBrush="Black" BorderThickness="4">
+                <TextBlock>&#x75;</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="NextRecordTooltip" Content="Click to go forward one record."></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="InMosaiqBorder" Margin="5,5,5,5" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2">
+            <Label x:Name="InMosaiqLabel" Content="IN MOSAIQ?" Foreground="Black" Background="Orange" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="0"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="InMosaiqYesBorder" BorderBrush="LawnGreen" BorderThickness="4" CornerRadius="10" Margin="13,12,13,12" Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="1">
+            <Button x:Name="InMosaiqYesButton" Foreground="Black" Background="LawnGreen" FontSize="30" FontFamily="Wingdings" BorderBrush="Black" BorderThickness="4">
+                <TextBlock>&#xFE;</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="InMosaiqYesTooltip" Content="Click if patient was FOUND in MOSAIQ"></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="InMosaiqNoBorder" BorderBrush="Red" BorderThickness="4" CornerRadius="10" Margin="13,12,13,12" Grid.Row="5" Grid.Column="6">
+            <Button x:Name="InMosaiqNoButton" Foreground="Black" Background="red" FontSize="30" FontFamily="Wingdings" BorderBrush="Black" BorderThickness="4">
+                <TextBlock>&#xFD;</TextBlock>
+                <Button.ToolTip>
+                    <ToolTip x:Name="InMosaiqNoTooltip" Content="Click if patient was NOT FOUND in MOSAIQ"></ToolTip>
+                </Button.ToolTip>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="InMosaiqWrapBorder" BorderBrush="Orange" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="4" Grid.RowSpan="1"/>
+        <Border x:Name="CurrentBorder" Margin="5,5,5,5" Grid.Row="6">
+            <Label x:Name="CurrentLabel" Content="CURRENT" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="CurrentNameBorder" Margin="0,5,5,5" Grid.Row="6" Grid.ColumnSpan="6" Grid.Column="1">
+            <Label x:Name="CurrentNameLabel" Content="" Foreground="Black" Background="LawnGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5,5,5,5" FontSize="24">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="CurrentMRNBorder" Margin="0,5,5,5" Grid.Row="6" Grid.Column="7">
+            <Label x:Name="CurrentMRNLabel" Content="" Foreground="LightBlue" Background="DarkBlue" Margin="5,5,5,5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="CurrentWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="6" Grid.ColumnSpan="7"/>
+        <Border x:Name="CurrentWrap2Border" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="6" Grid.ColumnSpan="8"/>
+        <Border x:Name="SourceBorder" Margin="5,5,5,5" Grid.Row="7">
+            <Label x:Name="SourceLabel" Content="SOURCE" Foreground="LightBlue" Background="DarkBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Border>
+        <Border x:Name="SourceNameBorder" Margin="0,5,5,5" Grid.Row="7" Grid.ColumnSpan="6" Grid.Column="1">
+            <Label x:Name="SourceNameLabel" Content="" Foreground="Black" Background="Yellow" Margin="5,5,5,5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="SourceMRNBorder" Margin="0,5,5,5" Grid.Row="7" Grid.Column="7">
+            <Label x:Name="SourceMRNLabel" Content="" Foreground="LightBlue" Background="DarkBlue" Margin="5,5,5,5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24">
+                <Label.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Label.Resources>
+            </Label>
+        </Border>
+        <Border x:Name="SourceWrapBorder" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="7" Grid.ColumnSpan="7"/>
+        <Border x:Name="SourceWrap2Border" BorderBrush="DarkBlue" BorderThickness="4" CornerRadius="10" Margin="5,5,5,5" Grid.Row="7" Grid.ColumnSpan="8"/>
+
+        <Border x:Name="EnterPasswordInputBorder" Visibility="Collapsed" Margin="0,-5,0,5" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="4" CornerRadius="25" >
+            <TextBox x:Name="EnterPasswordInputTextBox" Visibility="Collapsed" Text="PASSWORD" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="Black" Foreground="Yellow" FontSize="24">
+                <TextBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"></Setter>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </Border>
+        <Border x:Name="EnterPasswordBorder" Visibility="Collapsed" Margin="0,15,0,0" Grid.Column="3" Grid.ColumnSpan="4" Grid.RowSpan="1" CornerRadius="20" >
+            <Label x:Name="EnterPasswordLabel" Visibility="Collapsed" Content="ENTER PASSWORD" Foreground="Black" Background="Yellow" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24"></Label>
+        </Border>
+        <Border x:Name="EnterPasswordOKBorder" Visibility="Collapsed" Margin="25,5,20,20" BorderBrush="Yellow" BorderThickness="4" CornerRadius="15" Grid.Column="6" Grid.Row="1">
+            <Button x:Name="EnterPasswordOKButton" Visibility="Collapsed" Content="OK" BorderBrush="Black" BorderThickness="2" Margin="0,0,0,0" Grid.Column="6" Grid.ColumnSpan="1" FontSize="24">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        <Border x:Name="EnterPasswordWrapInputBorder" Visibility="Collapsed" Margin="0,15,0,5" BorderBrush="Yellow" BorderThickness="10" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="4" CornerRadius="20"/>
+
+
+    </Grid>
+</Window>
